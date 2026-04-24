@@ -13,7 +13,7 @@ app.use(express.json());
 
 // ✅ CORS Configuration
 app.use(cors({
-  origin: "http://localhost:3000", // frontend URL
+  origin: "https://test2-production-b5ac.up.railway.app", // frontend URL
   methods: ["GET", "POST"],
 }));
 
