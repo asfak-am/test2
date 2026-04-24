@@ -8,14 +8,29 @@ connectDB();
 
 const app = express();
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+  "http://localhost:5173",
+].filter(Boolean);
+
 // Middleware
 app.use(express.json());
 
 // ✅ CORS Configuration
 app.use(cors({
-  origin: "https://test2-production-b5ac.up.railway.app", // frontend URL
-  methods: ["GET", "POST"],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  methods: ["GET", "POST", "OPTIONS"],
 }));
+
+app.options("*", cors());
 
 // Routes
 app.use("/api/items", require("./routes/itemRoutes"));
