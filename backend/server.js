@@ -15,11 +15,7 @@ const allowedOrigins = [
   "http://localhost:5173",
 ].filter(Boolean);
 
-// Middleware
-app.use(express.json());
-
-// ✅ CORS Configuration
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -29,9 +25,14 @@ app.use(cors({
     callback(new Error(`Not allowed by CORS: ${origin}`));
   },
   methods: ["GET", "POST", "OPTIONS"],
-}));
+};
 
-app.options("*", cors());
+// Middleware
+app.use(express.json());
+
+// ✅ CORS Configuration
+app.use(cors(corsOptions));
+app.options("/api/items", cors(corsOptions));
 
 // Routes
 app.use("/api/items", require("./routes/itemRoutes"));
