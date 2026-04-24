@@ -10,6 +10,7 @@ const app = express();
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  "https://test2-alpha-blond.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173",
 ].filter(Boolean);
